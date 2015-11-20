@@ -1,0 +1,68 @@
+/* @import url(http://yui.yahooapis.com/3.10.0/build/cssreset/cssreset-min.css); */
+
+* {
+	-webkit-user-select: none;
+	box-sizing: border-box;
+}
+html, body {
+	height: 100%; width: 100%;
+	overflow: hidden;
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+	-webkit-app-region: drag;
+}
+a {
+	-webkit-app-region: no-drag;
+}
+a:hover {
+	cursor: pointer;
+}
+ol {
+	list-style-type: decimal;
+}
+
+#log {
+	position: fixed;
+	top: 2em;
+	left: 1.5em;
+    color: black;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+    visibility: hidden;
+    
+    /*    color: red;*/
+    /*	display: none;*/
+    /* text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white; */
+}
+
+nav {
+	position: fixed;
+	top: 0; right: 0; left: 0; height: 1.5em;
+	background: rgba(255,255,255,0.5);
+	
+	display: flex;
+	justify-content: space-between;
+    
+    visibility: hidden;
+	
+}
+
+#toolbar {
+	display: flex;
+	flex-direction: row-reverse;
+}
+#toolbar a, #title {
+	padding: 0 1em;
+	
+	display: flex;
+	align-items: center;
+	align-self: stretch;
+}
+#toolbar a:hover {
+	background: rgba(0,0,255,0.1);
+}
+#title {
+	padding-top: 1px;
+}

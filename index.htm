@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    
+	<title>東方坦克幻·坑</title>
+	
+	<link rel="stylesheet" type="text/css" href="css/cssreset-min.css">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+      
+    <!-- <script src='js/jquery-2.1.0.min.js'></script> -->
+    <script src='./js/pixi-3.0.6.min.js'></script>
+    <!-- <script src='js/p2-140714.min.js'></script> -->
+    <!-- <script src='js/jsbox2d.min.js'></script> -->
+    <!-- <script src='./js/Box2D_v2.3.1_min.js'></script> -->
+    <script src='./js/Box2D_v2.2.1_min.js'></script>
+    <!-- <script src='./js/ammo.js'></script> -->
+    <!-- <script src='js/Box2D_v2.3.1_debug.js'></script> -->
+<!--     <script src='js/physicsjs-full-0.6.0.min.js'></script>
+    <script src='js/keypress-2.0.2.min.js'></script>
+    <script src="js/mousetrap.min.js"></script>
+    <script src="js/mousetrap-bind-dictionary.min.js"></script>
+    <script src="js/soundjs-0.5.0.min.js"></script> -->
+	
+  </head>
+  <body>
+  
+	<!-- <audio id="bgm" src="sound/th06_15.ogg"></audio> -->
+
+	<nav>
+		<div id='title'>東方坦克幻·坑</div>
+		<div id="toolbar">
+			<a id="exit" onclick="acgn.exit()">×</a>
+			<a id="reload" onclick="acgn.reload()">↺</a>
+			<a id="fullscreen" onclick="acgn.fullscreen()">↱</a>
+			<a id="devTools" onclick="acgn.devTools()">D</a>
+		</div>
+	</nav>
+
+	<ul id="log"></ul>
+	
+	<script src="./js/acgn.js"></script>
+    <!-- <script>
+        var line = ["asdf", "asdf", "asdf", "asdf", "asdf", "asdf", "asdf", "asdf", "asdf", "asdf"];
+        var i = 3;
+        var j = i + 0;
+        var k = 1;
+        var value = line[i] + "";
+        while (true) {
+            
+            // if (value === "asdf asdf asdf asdf asdf asdf asdf") break;
+            if (j + 1 === line.length) break;
+            value += ' ' + line[j+1];
+            line[j] += ' ' + line[j+1];
+            line.splice(j+1,1);
+        };
+        console.log(line, value, j, line.length);
+    </script> -->
+
+  </body>
+</html>
