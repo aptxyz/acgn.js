@@ -1,7 +1,7 @@
 ﻿{
   "main": "index.htm",
   "name": "acgn",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "window": {
     "title": "我要做遊戲！！！",
     "icon": "favicon/16.png",

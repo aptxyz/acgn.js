@@ -24,24 +24,25 @@
 *loading
 @rectangle    layer=loading    alpha=0.5      color=black    pos=0      width=100%    height=100%
 @text         layer=loading    anchor=0.5                    pos=50%                  text="讀取資料中.\ \ |讀取資料中..\ |讀取資料中..."
-@arc          layer=loading    thickness=2    color=white    x=50%      y=50%         r=150         i=0    f=180    update=this.rotation+=0.2
+@arc          layer=loading    thickness=2    color=white    x=50%      y=50%         r=150         i=0    f=180    update=item.rotation+=0.2
 @wait         until=gameLoaded
 @return
 
-@set          gameState=playing
+@set          gameState=normal
 @jump         target=001.gs
 
 *debug
 // physics
 @set test='test'
 @text layer=system tag=debug pos=100%-5,50%  anchor=1,0.5 size=30 alpha=0.5 color=green bold=true text="(acgn.test)"
-@text layer=system tag=debug pos=100%-5,100%-180 anchor=1 size=12 alpha=0.5 text="Players: (acgn.players.length)"
-@text layer=system tag=debug pos=100%-5,100%-165 anchor=1 size=12 alpha=0.5 text="Enemies: (acgn.enemies.length)"
-@text layer=system tag=debug pos=100%-5,100%-150 anchor=1 size=12 alpha=0.5 text="Bullets: (acgn.bullets.length)"
-@text layer=system tag=debug pos=100%-5,100%-135 anchor=1 size=12 alpha=0.5 text="Enemy Bullets: (acgn.enemyBullets.length)"
-@text layer=system tag=debug pos=100%-5,100%-120 anchor=1 size=12 alpha=0.5 text="Items: (acgn.items.length)"
-@text layer=system tag=debug pos=100%-5,100%-105 anchor=1 size=12 alpha=0.5 text="Walls: (acgn.walls.length)"
-@text layer=system tag=debug pos=100%-5,100%-90  anchor=1 size=12 alpha=0.5 text="Floors: (acgn.floors.length)"
+@text layer=system tag=debug pos=100%-5,100%-195 anchor=1 size=12 alpha=0.5 text="Game State: (acgn.gameState)"
+@text layer=system tag=debug pos=100%-5,100%-180 anchor=1 size=12 alpha=0.5 text="Players: (acgn.players)"
+@text layer=system tag=debug pos=100%-5,100%-165 anchor=1 size=12 alpha=0.5 text="Enemies: (acgn.enemies)"
+@text layer=system tag=debug pos=100%-5,100%-150 anchor=1 size=12 alpha=0.5 text="Bullets: (acgn.bullets)"
+@text layer=system tag=debug pos=100%-5,100%-135 anchor=1 size=12 alpha=0.5 text="Enemy Bullets: (acgn.enemyBullets)"
+@text layer=system tag=debug pos=100%-5,100%-120 anchor=1 size=12 alpha=0.5 text="Items: (acgn.items)"
+@text layer=system tag=debug pos=100%-5,100%-105 anchor=1 size=12 alpha=0.5 text="Walls: (acgn.walls)"
+@text layer=system tag=debug pos=100%-5,100%-90  anchor=1 size=12 alpha=0.5 text="Floors: (acgn.floors)"
 @text layer=system tag=debug pos=100%-5,100%-72  anchor=1 size=15 alpha=0.5 color=yellow bold=true text="Physic Calculations: (acgn.calculations)"
 // time
 @text layer=system tag=debug pos=100%-5,100%-50 anchor=1 size=12 alpha=0.5 text="Audio Context Time: (acgn.audioContext.currentTime.toFixed(1))"

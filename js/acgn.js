@@ -292,35 +292,106 @@ acgn.initialize = function () {
     }});
     Object.defineProperty(acgn, "calculations", { get: function () {        // physic calculations per second
         
-        var p = acgn.players.length          // collision mask bits: p, e, eb, i, w, f              p * ( p + e + eb + i + w + f)
-        var e = acgn.enemies.length          // collisoin mask bits: p, e, b, i, w, f               e * ( e + b + i + w + f )
-        var b = acgn.bullets.length          // collisoin mask bits: e, w, f                        b * ( w + f )
-        var eb = acgn.enemyBullets.length    // collisoin mask bits: p, w, f                        eb * ( w + f )
-        var i = acgn.item.length             // collisoin mask bits: p, e, w, f                     i * ( w + f )
-        var w = acgn.walls.length            // collisoin mask bits: p, e, b, eb, i, w, f           w * ( w + f )
-        var f = acgn.floors.length           // collisoin mask bits: p, e, b, eb, i, w              f * ( 0)
+        var p = acgn.players          // collision mask bits: p, e, eb, i, w, f              p * ( p + e + eb + i + w + f)
+        var e = acgn.enemies          // collisoin mask bits: p, e, b, i, w, f               e * ( e + b + i + w + f )
+        var b = acgn.bullets          // collisoin mask bits: e, w, f                        b * ( w + f )
+        var eb = acgn.enemyBullets    // collisoin mask bits: p, w, f                        eb * ( w + f )
+        var i = acgn.items             // collisoin mask bits: p, e, w, f                     i * ( w + f )
+        var w = acgn.walls            // collisoin mask bits: p, e, b, eb, i, w, f           w * ( w + f )
+        var f = acgn.floors           // collisoin mask bits: p, e, b, eb, i, w              f * ( 0)
         
         return p*(p+e+eb+i+w+f) + e*(e+b+i+w+f) + (b+eb+i+w)*(w+f);
         
     }});
+    Object.defineProperty(acgn, "players", { get: function () {        // physic calculations per second
+        
+        if (!acgn.stage.sprite) return 0;
+        var count = 0;
+        for (var i = 0; i < acgn.stage.sprite.children.length; i++) {
+            if (acgn.stage.sprite.children[i].type === 'player') count++
+        };
+        return count;
+        
+    }});
+    Object.defineProperty(acgn, "enemies", { get: function () {        // physic calculations per second
+        
+        if (!acgn.stage.sprite) return 0;
+        var count = 0;
+        for (var i = 0; i < acgn.stage.sprite.children.length; i++) {
+            if (acgn.stage.sprite.children[i].type === 'enemy') count++
+        };
+        return count;
+        
+    }});
+    Object.defineProperty(acgn, "bullets", { get: function () {        // physic calculations per second
+        
+        if (!acgn.stage.sprite) return 0;
+        var count = 0;
+        for (var i = 0; i < acgn.stage.sprite.children.length; i++) {
+            if (acgn.stage.sprite.children[i].type === 'bullet') count++
+        };
+        return count;
+        
+    }});
+    Object.defineProperty(acgn, "enemyBullets", { get: function () {        // physic calculations per second
+        
+        if (!acgn.stage.sprite) return 0;
+        var count = 0;
+        for (var i = 0; i < acgn.stage.sprite.children.length; i++) {
+            if (acgn.stage.sprite.children[i].type === 'enemyBullet') count++
+        };
+        return count;
+        
+    }});
+    Object.defineProperty(acgn, "items", { get: function () {        // physic calculations per second
+        
+        if (!acgn.stage.sprite) return 0;
+        var count = 0;
+        for (var i = 0; i < acgn.stage.sprite.children.length; i++) {
+            if (acgn.stage.sprite.children[i].type === 'item') count++
+        };
+        return count;
+        
+    }});
+    Object.defineProperty(acgn, "walls", { get: function () {        // physic calculations per second
+        
+        if (!acgn.stage.sprite) return 0;
+        var count = 0;
+        for (var i = 0; i < acgn.stage.sprite.children.length; i++) {
+            if (acgn.stage.sprite.children[i].type === 'wall') count++
+        };
+        return count;
+        
+    }});
+    Object.defineProperty(acgn, "floors", { get: function () {        // physic calculations per second
+        
+        if (!acgn.stage.sprite) return 0;
+        var count = 0;
+        for (var i = 0; i < acgn.stage.sprite.children.length; i++) {
+            if (acgn.stage.sprite.children[i].type === 'floor') count++
+        };
+        return count;
+        
+    }});
+    
     
     // object references
     
         acgn.layers = {};
         
         // physics
-        acgn.physics = [];
+        acgn.sprites = [];
         
-        acgn.players = [];          // collision mask bits: p, e, eb, i, w, f
-        acgn.enemies = [];          // collisoin mask bits: p, e, b, i, w, f
-        acgn.bullets = [];          // collisoin mask bits: e, w, f
-        acgn.enemyBullets = [];     // collisoin mask bits: p, w, f
-        acgn.items = [];            // collisoin mask bits: p, e, w, f
-        acgn.walls = [];            // collisoin mask bits: p, e, b, eb, i, w, f
-        acgn.floors = [];           // collisoin mask bits: p, e, b, eb, i, w
-        acgn.boundaries = [];       // collision mask bits: p
+        // acgn.players = [];          // collision mask bits: p | e | eb | i | w | f
+        // acgn.enemies = [];          // collisoin mask bits: p | e | b | i | w | f
+        // acgn.bullets = [];          // collisoin mask bits: e | w | f
+        // acgn.enemyBullets = [];     // collisoin mask bits: p | w | f
+        // acgn.items = [];            // collisoin mask bits: p | e | w | f
+        // acgn.walls = [];            // collisoin mask bits: p | e | b | eb | i | w | f
+        // acgn.floors = [];           // collisoin mask bits: p | e | b | eb | i | w
+        // acgn.boundaries = [];       // collision mask bits: p
                 
-        acgn.spriteTemplates = [];
+        // acgn.spriteTemplates = [];
         acgn.textures = {};
         
         acgn.player1 = null;
@@ -340,14 +411,38 @@ acgn.initialize = function () {
         // for box2d collision group
         acgn.categoryBits = {
             player: 1,          1: 'player',
-            sprite: 2,          2: 'sprite',    
+            enemy: 2,           2: 'enemy',    
             bullet: 4,          4: 'bullet',
-            spriteBullet: 8,    8: 'spriteBullet',
+            enemyBullet: 8,     8: 'enemyBullet',
             item: 16,           16: 'item',
             wall: 32,           32: 'wall',
             floor: 64,          64: 'floor',
             boundary: 128,      128: 'boundary',
         };
+        
+        var p = acgn.categoryBits.player;
+        var e = acgn.categoryBits.enemy;
+        var b = acgn.categoryBits.bullet;
+        var eb = acgn.categoryBits.enemyBullet;
+        var i = acgn.categoryBits.item;
+        var w = acgn.categoryBits.wall;
+        var f = acgn.categoryBits.floor;
+        var bd = acgn.categoryBits.boundary;
+        
+        acgn.maskBits = { 
+             player:      e | eb | i | w | f | bd,
+             enemy:       p | b | i | w | f,
+             bullet:      e | w | f,
+             enemyBullet: p | w | f,
+             item:        p | e | w | f,
+             wall:        p | e | b | eb | i | w | f,
+             floor:       p | e | b | eb | i | w,
+             boundary:    p
+        };
+        
+        
+        acgn.life = 3;
+        acgn.point = 0;
 
     // key setup
     acgn.key();
@@ -421,6 +516,10 @@ acgn.fs = require('fs');
 acgn.window = require('nw.gui').Window.get();
 // acgn.process = require('process');
 acgn.exit = function() {
+    acgn.window.close();
+    return;
+};
+acgn.exit2 = function() {
 
     // acgn.process.exit();
     acgn.window.close();
@@ -926,7 +1025,7 @@ acgn.key.animate = function() {
     
     
 };
-acgn.key.default = {
+acgn.key.input = {
     home: acgn.reload,
     select: function() {
     },
@@ -957,7 +1056,6 @@ acgn.key.default = {
     y: function() {
     },
 };
-acgn.key.input = acgn.key.default;
 acgn.key.code = {
         
        // 0: "\\", 8: "backspace", 9: "tab", 12: "num",
@@ -1013,18 +1111,48 @@ acgn.key.code = {
     start: false,
     
 };
-acgn.keyReset = function() {
-    acgn.key.input = acgn.key.default;
+acgn.key.reset = function() {
+    acgn.key.input = {
+        home: acgn.reload,
+        select: function() {
+        },
+        start:  function() {
+        },
+        l1: function() {
+        },
+        l2: function() {
+        },
+        r1: function() {
+        },
+        r2: function() {
+        },
+        l: function() {
+        },
+        d: function() {
+        },
+        u: function() {
+        },
+        r: function() {
+        },
+        a: function() {
+        },
+        b: function() {
+        },
+        x: function() {
+        },
+        y: function() {
+        },
+    };
 };
 acgn.keySTG = function() {
 
+    acgn.key.reset();
+    
     acgn.key.input.update = function() {
 
         var player = acgn.player1;
         
-        if (!player || player.state == 'dead') return;
-        
-        var body = player.body;
+        if (!player || player.spriteState === 'dead') return;
         
         var key = acgn.key.code;
         var left = key.l;
@@ -1059,39 +1187,54 @@ acgn.keySTG = function() {
             else if   ((curr != last)  && (last == 'ul'  || last == 'ur'  || last == 'dl'  || last == 'dr' ))     {move = last;}
             else if   ((last != last2) && (last2 == 'ul' || last2 == 'ur'    || last2 == 'dl' || last2 == 'dr'))  {move = last2;}
             else                                                                                                  {move = curr;}
-
-            var v = 10 * (key.r1 ? 0.3 : 1) * 60 / acgn.scale;  // unit in meter per second
+            
+            // var velocity = body.GetLinearVelocity();
+            var v = player.template.velocity * ( (key.r1) ? 0.3 : 1);
             var vr = v * 0.7071;
             
-            var velocity = body.GetLinearVelocity();
-            
             switch (move) {
-                case 'u':   velocity.set_x(0),   velocity.set_y(-v);  body.SetTransform(body.GetPosition(), Math.PI * 1);      break;
-                case 'ur':  velocity.set_x(vr),  velocity.set_y(-vr); body.SetTransform(body.GetPosition(), Math.PI * -0.75);  break;
-                case 'r':   velocity.set_x(v),   velocity.set_y(0);   body.SetTransform(body.GetPosition(), Math.PI * -0.5);   break;
-                case 'dr':  velocity.set_x(vr),  velocity.set_y(vr);  body.SetTransform(body.GetPosition(), Math.PI * -0.25);  break;
-                case 'd':   velocity.set_x(0),   velocity.set_y(v);   body.SetTransform(body.GetPosition(), Math.PI * 0);      break;
-                case 'dl':  velocity.set_x(-vr), velocity.set_y(vr);  body.SetTransform(body.GetPosition(), Math.PI * 0.25);   break;
-                case 'l':   velocity.set_x(-v),  velocity.set_y(0);   body.SetTransform(body.GetPosition(), Math.PI * 0.5);    break;
-                case 'ul':  velocity.set_x(-vr), velocity.set_y(-vr); body.SetTransform(body.GetPosition(), Math.PI * 0.75);   break;
+                case 'u':   player.vx = 0,   player.vy = v;   break;
+                case 'ur':  player.vx = -vr, player.vy = vr;  break;
+                case 'r':   player.vx = -v,  player.vy = 0;   break;
+                case 'dr':  player.vx = -vr, player.vy = -vr; break;
+                case 'd':   player.vx = 0,   player.vy = -v;  break;
+                case 'dl':  player.vx = vr,  player.vy = -vr; break;
+                case 'l':   player.vx = v,   player.vy = 0;   break;
+                case 'ul':  player.vx = vr,  player.vy = vr;  break;
             }
             
-            body.SetLinearVelocity(velocity);
+            var x = player.position.x;     var vx = player.vx;      var ax = player.appearanceX;      var w = acgn.width;
+            var y = player.position.y;     var vy = player.vy;      var ay = player.appearanceY;      var h = acgn.height;
+            var a = player.rotation;
+            
+            
+            if      (x + ax - vx > w) { player.vx = -(w - x - ax) }
+            else if (x - ax - vx < 0) { player.vx = -(  - x + ax) };
+            if      (y + ay - vy > h) { player.vy = -(h - y - ay) }
+            else if (y - ay - vy < 0) { player.vy = -(  - y + ay) };
+            
+            player.ax = 0;
+            player.ay = 0;
+
+            
 
         } else {
         
-            var velocity = body.GetLinearVelocity();
-            velocity.set_x(0);
-            velocity.set_y(0);
-            body.SetLinearVelocity(velocity);
+            player.vx = 0;
+            player.vy = 0;
+            player.ax = 0;
+            player.ay = 0;
             
         }
     
         // shooting
     
         if (key.a) {
-            
+            player.spriteState = 'shoot';
+        } else if (!key.a && player.spriteState === 'shoot') {
+            player.spriteState = 'normal';
         };
+       
     
     };
 
@@ -1335,17 +1478,17 @@ acgn.loadScript = function() {
                     script.src = './script/' + scripts[i];
                     script.onload = function() {
                         
-                        for (proto in acgn.template) {
-                            var states = acgn.template[proto].state;
-                            for (state in states) {
-                                for (var k = 0; k < states[state].length; k++) {
-                                    var command = states[state][k];
-                                    command.t = typeof command.t == 'number' ? command.t : 0;
-                                    command.repeat = typeof command.repeat == 'number' ? command.repeat : 1;
-                                    command.freq = typeof command.freq == 'number' ? command.freq : 0.1;
-                                };
-                            };
-                        };
+                        // for (proto in acgn.template) {
+                            // var states = acgn.template[proto].state;
+                            // for (state in states) {
+                                // for (var k = 0; k < states[state].length; k++) {
+                                    // var command = states[state][k];
+                                    // command.t = typeof command.t == 'number' ? command.t : 0;
+                                    // command.repeat = typeof command.repeat == 'number' ? command.repeat : 1;
+                                    // command.freq = typeof command.freq == 'number' ? command.freq : 0.1;
+                                // };
+                            // };
+                        // };
                         
                         if (++j === scripts.length) loaded();
                         
@@ -2087,7 +2230,7 @@ acgn.if = function() {
         for (var i = start + 0; i < acgn.script[s].length; i++) {
             var line = acgn.script[s][i];
             
-            if (line.match(/^@(else|elseif|endif)/)) {
+            if (line.match(/^@(else|elseif|endif)\b/)) {
             
                 acgn.scriptLocation[1] = i + 0;
                 break;
@@ -2277,6 +2420,12 @@ acgn.wait = function() {
         };
     
     }
+    else if ( typeof arg.untilBgm === 'number' ) {
+        acgn.wait.until = function() {
+            var test = acgn.bgm.start + arg.untilBgm < acgn.audioContext.currentTime;
+            return test;
+        };
+    }
     else {
         acgn.wait.until = function() {
             return false;
@@ -2451,8 +2600,6 @@ acgn.button.select = function() {
     };
     if (button === undefined) return;
     
-    console.log(typeof button.target);
-    
     if (typeof button.target === 'function') {
         button.target();
     } else if (typeof button.target === 'string') {
@@ -2511,6 +2658,7 @@ acgn.layer = function() {
     }
     
     var layer = new PIXI.Container();
+    layer.isLayer = true;
     acgn.stage[child] = parent[child] = layer;
     layer.name = child;
     parent.addChild(layer);
@@ -2541,21 +2689,6 @@ acgn.add = function(item, arg) {
         
     };
     
-    // pivot
-    if (item.pivot) {
-        if (typeof arg.pivot === 'object') item.pivot = arg.pivot;
-        if (typeof arg.pivotX === 'number') item.pivot.x = arg.pivotX;
-        if (typeof arg.pivotY === 'number') item.pivot.y = arg.pivotY;
-        // if (item instanceof PIXI.Graphic) console.log(item);
-    };
-    
-    // anchor
-    if (item.anchor) {
-        if (typeof arg.anchor === 'object') item.anchor = arg.anchor;
-        if (typeof arg.anchorX === 'number') item.anchor.x = arg.anchorX;
-        if (typeof arg.anchorY === 'number') item.anchor.y = arg.anchorY;
-    };
-    
     // position center, left, right
     if (item.position && item.anchor && (typeof arg.position == 'string') ) {
     
@@ -2578,6 +2711,21 @@ acgn.add = function(item, arg) {
     
     };
     
+    // pivot
+    if (item.pivot) {
+        if (typeof arg.pivot === 'object') item.pivot = arg.pivot;
+        if (typeof arg.pivotX === 'number') item.pivot.x = arg.pivotX;
+        if (typeof arg.pivotY === 'number') item.pivot.y = arg.pivotY;
+        // if (item instanceof PIXI.Graphic) console.log(item);
+    };
+    
+    // anchor
+    if (item.anchor) {
+        if (typeof arg.anchor === 'object') item.anchor = arg.anchor;
+        if (typeof arg.anchorX === 'number') item.anchor.x = arg.anchorX;
+        if (typeof arg.anchorY === 'number') item.anchor.y = arg.anchorY;
+    };
+    
     // update
     if (typeof item.update === 'function') item.update = [item.update];
     if (arg.update) {
@@ -2585,24 +2733,26 @@ acgn.add = function(item, arg) {
         item.update.push(arg.update);
     };
     if (arg.base) item.base = arg.base;
+
     
-    Object.defineProperty(item, "state", { set: function (value) {
+    Object.defineProperty(item, 'state', { set: function(value) {
+    
+        if (this.state === value) return;
     
         this._state = value;
-        this.stateBirth = Date.now();
+        this.stateBirth = acgn.t1 + 0;
         
     }, get: function() {
     
         return this._state;
-        
-    }});
     
+    }});
     item.state = arg.state || 'enter';
     
     item.alpha = 0;
     item.birthAlpha = typeof arg.alpha === 'number'? arg.alpha : 1;
     
-    item.birth = Date.now();            item.last = item.birth + 0;
+    item.birth = acgn.t1 + 0;            item.last = item.birth + 0;
     item.birthX = item.x + 0;
     item.birthY = item.y + 0;
     
@@ -2861,7 +3011,9 @@ acgn.clear = function() {
         for (var j = 0; j < layer.children.length; j++) {
             
             var item = layer.children[j];
-            if (tag === undefined || tag === item.tag) item.state = 'exit';
+            if ( (tag === undefined || tag === item.tag) && !item.isLayer ) {
+                item.state = 'exit';
+            };
             
         }
         
@@ -2881,9 +3033,7 @@ acgn.quake = function() {
         var dt = Date.now() - acgn.wait.birth;
         var test = dt > time;
         
-        if (test) {
-            delete acgn.wait.birth;
-        } else {
+        if (!test) {
             var rotate = Math.floor(dt/100) % 2;
             if (rotate === 1) {acgn.stage.rotation = 0.1}
             else if (rotate === 0) {acgn.stage.rotation = -0.1}
@@ -2891,6 +3041,7 @@ acgn.quake = function() {
         return test;
         
     }, run: function() {
+        delete acgn.wait.birth;
         acgn.stage.rotation = 0;
     }});
     
@@ -3226,8 +3377,6 @@ acgn.message = function(text) {
 
         
     };
-
-    
     
     if (msg.fullText) acgn.wait({until: 'messageReady'});
     
@@ -3503,10 +3652,10 @@ acgn.sprite = function() {
     var arg = arguments[0] || {};
     var type = arg.type || 'enemy';
     var template = acgn.template[arg.template || 'default'];
-    var x = arg.x !== undefined ? arg.x : 0;        x /= acgn.scale;
-    var y = arg.y !== undefined ? arg.y : 0;        y /= acgn.scale;
-    var x2 = arg.x2 !== undefined ? arg.x2 : 0;     x2 /= acgn.scale;
-    var y2 = arg.x2 !== undefined ? arg.y2 : 0;     y2 /= acgn.scale;
+    var x = arg.x !== undefined ? arg.x : 0;//        x /= acgn.scale;
+    var y = arg.y !== undefined ? arg.y : 0;//        y /= acgn.scale;
+    var x2 = arg.x2 !== undefined ? arg.x2 : 0;//     x2 /= acgn.scale;
+    var y2 = arg.x2 !== undefined ? arg.y2 : 0;//     y2 /= acgn.scale;
     
     var item = new PIXI.Sprite.fromFrame('blank');
     arg.layer = 'sprite';
@@ -3514,98 +3663,118 @@ acgn.sprite = function() {
     item.template = template;
     item.type = type;
     
-    item.anchor = template.anchor || /* template.state.normal.anchor || */ {x: 0.5, y: 0.5};
+    item.anchor = template.anchor || {x: 0.5, y: 0.5};
+    item.hp = template.hp;
+    item.atk = template.atk;
+    item.def = template.def;
     
-    item.hp = template.hp;              item.mp = template.mp;                  item.atk = template.atk;                item.def = template.def;
-    item.hpFinal = template.hpFinal;    item.mpFinal = template.mpFinal;
-    item.hpRate = template.hpRate;      item.mpRate = template.mpRate;
+    // item.direction = 'd';
+
+    if (template.shape[0] === 'circle') {
+        item.r = template.shape[1];
+    } else if (template.shape[0] === 'rectangle') {
+        item.rX = template.shape[1];
+        item.rY = template.shape[2];
+    };
     
-    item.direction = 'd';
+    if (template.appearanceShape[0] === 'circle') {
+        item.appearanceX = template.appearanceShape[1];
+        item.appearanceY = template.appearanceShape[1];
+    } else if (template.appearanceShape[0] === 'rectangle') {
+        item.appearanceX = template.appearanceShape[1];
+        item.appearanceY = template.appearanceShape[2];
+    };
     
     item = acgn.add(item, arg);
 
-    var bodyDef = new Box2D.b2BodyDef();
-    var pos = bodyDef.get_position();
-    pos.set_x(x);
-    pos.set_y(y);
+    // var bodyDef = new Box2D.b2BodyDef();
+    // var pos = bodyDef.get_position();
+    // pos.set_x(x);
+    // pos.set_y(y);
+    
+    // switch (type) {
+        // case 'player':              
+        // case 'enemy':              
+        // case 'bullet':              
+        // case 'enemybullet':        
+        // case 'item':                
+            // bodyDef.set_type(Box2D.b2_dynamicBody); break;
+        // case 'wall':                
+        // case 'floor':               
+        // case 'boundary':            
+            // bodyDef.set_type(Box2D.b2_staticBody); break;
+    // };
+    
+        
+    
+    // if (template.shape === 'edge') {
+    
+        // var shape = new Box2D.b2EdgeShape();
+        // var p1 = new Box2D.b2Vec2(x, y);
+        // var p2 = new Box2D.b2Vec2(x2, y2);
+        // shape.Set(p1, p2);
+        // Box2D.destroy(p1);
+        // Box2D.destroy(p2);
+        // pos.set_x(0);
+        // pos.set_y(0);
+        
+    // }
+    // else if (template.shape[0] === 'circle') {
+    
+        // var shape = new Box2D.b2CircleShape();
+        // shape.set_m_radius(template.shape[1]/acgn.scale);
+        
+    // }
+    // else if (template.shape[0] === 'rectangle') {
+    
+        // var shape = new Box2D.b2PolygonShape();
+        // shape.SetAsBox(template.shape[1]/acgn.scale, template.shape[2]/acgn.scale);
+        
+    // };
+    
+    // var fixDef = new Box2D.b2FixtureDef();
+    // fixDef.set_shape(shape);
+    // fixDef.set_friction(0);
+    // fixDef.set_restitution(0);
+    
+    // var filter = fixDef.get_filter();
     
     switch (type) {
-        case 'player':              
-        case 'enemy':              
-        case 'bullet':              
-        case 'enemybullet':        
-        case 'item':                
-            bodyDef.set_type(Box2D.b2_dynamicBody); break;
-        case 'wall':                
-        case 'floor':               
-        case 'boundary':            
-            bodyDef.set_type(Box2D.b2_staticBody); break;
+        case 'player':              item.categoryBits = acgn.categoryBits.player;      item.maskBits = acgn.maskBits.player;      break;
+        case 'enemy':               item.categoryBits = acgn.categoryBits.enemy;       item.maskBits = acgn.maskBits.enemy;       break;
+        case 'bullet':              item.categoryBits = acgn.categoryBits.bullet;      item.maskBits = acgn.maskBits.bullet;      break;
+        case 'enemyBullet':         item.categoryBits = acgn.categoryBits.enemyBullet; item.maskBits = acgn.maskBits.enemyBullet; break;
+        case 'item':                item.categoryBits = acgn.categoryBits.item;        item.maskBits = acgn.maskBits.item;        break;
+        case 'wall':                item.categoryBits = acgn.categoryBits.wall;        item.maskBits = acgn.maskBits.wall;        break;
+        case 'floor':               item.categoryBits = acgn.categoryBits.floor;       item.maskBits = acgn.maskBits.floor;       break;
+        case 'boundary':            item.categoryBits = acgn.categoryBits.boundary;    item.maskBits = acgn.maskBits.boundary;    break;
     };
     
+    item.vx = 0;
+    item.vy = 0;
+    item.ax = 0;
+    item.ay = 0;
+    
+    Object.defineProperty(item, 'spriteState', { set: function(value) {
         
-    
-    if (template.shape === 'edge') {
-    
-        var shape = new Box2D.b2EdgeShape();
-        var p1 = new Box2D.b2Vec2(x, y);
-        var p2 = new Box2D.b2Vec2(x2, y2);
-        shape.Set(p1, p2);
-        Box2D.destroy(p1);
-        Box2D.destroy(p2);
-        pos.set_x(0);
-        pos.set_y(0);
+        if (this.spriteState === value) return;
         
-    }
-    else if (template.shape[0] === 'circle') {
+        this._spriteState = value;
+        this.spriteStateBirth = acgn.t1 + 0;
     
-        var shape = new Box2D.b2CircleShape();
-        shape.set_m_radius(template.shape[1]/acgn.scale);
+            item.updates = this.template.state[value];
+            item.updatesCount = [];
+            for (var i = 0; i < item.updates.length; i++) {
+                item.updatesCount.push(0)
+            };
+            
         
-    }
-    else if (template.shape[0] === 'rectangle') {
+    }, get: function() {
     
-        var shape = new Box2D.b2PolygonShape();
-        shape.SetAsBox(template.shape[1]/2/acgn.scale, template.shape[2]/2/acgn.scale);
-        
-    };
+        return this._spriteState;
     
-    var fixDef = new Box2D.b2FixtureDef();
-    fixDef.set_shape(shape);
-    fixDef.set_friction(0);
-    fixDef.set_restitution(0);
-    
-    var filter = fixDef.get_filter();
-    
-    var  p = acgn.categoryBits.player;
-    var  e = acgn.categoryBits.enemy;
-    var  b = acgn.categoryBits.bullet;
-    var eb = acgn.categoryBits.enemyBullet;
-    var  i = acgn.categoryBits.item;
-    var  w = acgn.categoryBits.wall;
-    var  f = acgn.categoryBits.floor;
-    var  bd = acgn.categoryBits.boundary;
-    
-    switch (type) {
-        case 'player':              filter.set_categoryBits(p);       filter.set_maskBits(p | e | eb | i | w | f | bd);      break;
-        case 'enemy':               filter.set_categoryBits(e);       filter.set_maskBits(p | e |  b | i | w | f);           break;
-        case 'bullet':              filter.set_categoryBits(b);       filter.set_maskBits(e | w | f);                        break;
-        case 'enemybullet':         filter.set_categoryBits(eb);      filter.set_maskBits(p | w | f);                        break;
-        case 'item':                filter.set_categoryBits(i);       filter.set_maskBits(p | e | w | f);                    break;
-        case 'wall':                filter.set_categoryBits(w);       filter.set_maskBits(p | e | b | eb | i | w | f);       break;
-        case 'floor':               filter.set_categoryBits(f);       filter.set_maskBits(p | e | b | eb | i | w);           break;
-        case 'boundary':            filter.set_categoryBits(f);       filter.set_maskBits(p);                                break;
-    };
-
-    // add to box2d world
-    item.body = acgn.world.CreateBody(bodyDef);
-    item.body.CreateFixture(fixDef);
-    
-    // garbage colleciton
-    Box2D.destroy(bodyDef);
-    Box2D.destroy(fixDef);
-    Box2D.destroy(shape);
-    
-    acgn.physics.push(item);
+    }});
+    item.spriteState = 'normal';
     
     return item;
     
@@ -3616,7 +3785,7 @@ acgn.player = function(x,y,x2,y2) {
     arg.type = 'player';
     
     var player = acgn.sprite(arg);
-    acgn.players.push(player);
+    player.rotation = Math.PI;
     
     switch (arg.player) {
         case 1:
@@ -3635,7 +3804,6 @@ acgn.enemy = function(name,x,y,x2,y2) {
     arg.type = 'enemy';
     
     var enemy = acgn.sprite(arg);
-    acgn.enemies.push(enemy);
     
     return enemy;
     
@@ -3646,7 +3814,6 @@ acgn.bullet = function(name,x,y,x2,y2) {
     arg.type = 'bullet';
     
     var bullet = acgn.sprite(arg);
-    acgn.bullets.push(bullet);
     
     return bullet;
     
@@ -3657,7 +3824,6 @@ acgn.enemyBullet = function(name,x,y,x2,y2) {
     arg.type = 'enemyBullet';
     
     var enemyBullet = acgn.sprite(arg);
-    acgn.enemyBullets.push(enemyBullet);
     
     return enemyBullet;
     
@@ -3668,7 +3834,6 @@ acgn.item = function(name,x,y,x2,y2) {
     arg.type = 'item';
     
     var item = acgn.sprite(arg);
-    acgn.items.push(item);
     
     return item;
     
@@ -3679,7 +3844,6 @@ acgn.wall = function(name,x,y,x2,y2) {
     arg.type = 'wall';
     
     var wall = acgn.sprite(arg);
-    acgn.walls.push(wall);
     
     return wall;
     
@@ -3690,7 +3854,6 @@ acgn.floor = function(name,x,y,x2,y2) {
     arg.type = 'floor';
     
     var floor = acgn.sprite(arg);
-    acgn.floors.push(floor);
     
     return floor;
     
@@ -3701,10 +3864,12 @@ acgn.boundary = function() {
     arg.type = 'boundary';
     
     var boundary = acgn.sprite(arg);
-    acgn.boundaries.push(boundary);
     
     return boundary;
 
+};
+acgn.getAngle = function(A,B) {
+    return Math.atan2(A.x-B.x,B.y-A.y);
 };
 
 acgn.player.physic = function() {
@@ -3788,8 +3953,6 @@ acgn.bgm = function() {
     var sources = acgn.bgm.source = acgn.bgm.source || [];
     var now = acgn.bgm.start = context.currentTime;
     
-    
-    
     if (buffer[storage]) {        // buffer exist
     
         var fadeOut = function() {
@@ -3864,38 +4027,108 @@ acgn.se = function() {
 
 };
 
-acgn.beginContact = function(contactPtr) {
+acgn.step = function() {
+
+    // no sprite layer ==> exit
+    if (!acgn.stage.sprite) return;
     
-    var contact = Box2D.wrapPointer( contactPtr, Box2D.b2Contact );
-    var fixtureA = contact.GetFixtureA();
-    var fixtureB = contact.GetFixtureB();
-    var bodyA = fixtureA.GetBody();
-    var bodyB = fixtureB.GetBody();
-    // var a = acgn.reference[bodyA.e];
-    // var b = acgn.reference[bodyB.e];
+    // move the sprite
+    for (var i = 0; i < acgn.stage.sprite.children.length; i++) {
+        
+        var sprite = acgn.stage.sprite.children[i];
+        
+        sprite.vx += sprite.ax;
+        sprite.vy += sprite.ay;
+        
+        sprite.x0 = sprite.x + 0;
+        sprite.y0 = sprite.y + 0;
+        
+        if (sprite.absoluteVelocity) {
+            sprite.x += sprite.vx;
+            sprite.y += sprite.vy;
+        }
+        else {
+            sprite.x += sprite.vx * Math.cos(sprite.rotation) - sprite.vy * Math.sin(sprite.rotation);
+            sprite.y += sprite.vx * Math.sin(sprite.rotation) + sprite.vy * Math.cos(sprite.rotation);
+        };
+        
+        if ( (sprite.x + sprite.appearanceX < 0) || (sprite.x - sprite.appearanceX > acgn.width) ||
+             (sprite.y + sprite.appearanceY < 0) || (sprite.y - sprite.appearanceY > acgn.height) ) sprite.state = 'exit';
+        
+    };
     
-    // var damageA = b.atk - a.def;
-    // var damageB = a.atk - b.def;
-    
-    // if (damageA > 0) a.hp -= damageA;
-    // if (damageB > 0) b.hp -= damageB;
-    
-    // if (a.hp <= 0) {
-        // a.state = 'dead';
-    // };
-    
-    // if (b.hp <= 0) {
-        // b.state = 'dead';
-    // };
-    
-    
-    
+    // check for collision
+    for (var i = 0; i < acgn.stage.sprite.children.length; i++) {
+        
+        var A = acgn.stage.sprite.children[i];
+            
+        if (A.spriteState === 'dead' || A.state === 'exit' || A.state === 'enter' ) continue;
+        
+        for (var j = 0; j < acgn.stage.sprite.children.length; j++) {
+        
+            var B = acgn.stage.sprite.children[j];
+            
+            if (i <= j) continue;
+            if (B.spriteState === 'dead' || B.state === 'exit' || B.state === 'enter' ) continue;
+            
+            var m = A.maskBits;
+            var c = B.categoryBits;
+            
+            if ( parseInt(m|c) === m ) {   // maskBits matched categoryBits, check collision!;
+
+                if ( (Math.max(A.x, A.x0) < Math.min(B.x, B.x0) && Math.min(A.x, A.x0) > Math.max(B.x, B.x0) &&
+                      Math.max(A.y, A.y0) < Math.min(B.y, B.y0) && Math.min(A.y, A.y0) > Math.max(B.y, B.y0) )) continue; // boardphase detection
+            
+                    var t = undefined;
+                    
+                    var x1 = A.x0 - B.x0;			// Minkowski sum althorigm:
+                    var y1 = A.y0 - B.y0;			// item1 ◯ + item2 -◯		center(0,0)
+                    var x2 = A.x - B.x;				// item1 → + item2 -→		rotation(0) = slope(0)
+                    var y2 = A.y - B.y;				//
+                    var dx = x2 - x1;											// solve	xx+yy=rr & y=b
+                    var dy = y2 - y1;											// 			x = +/- sqrt(rr-yy)
+                    
+                    var r = A.r + B.r;
+                    
+                    var alpha1 = Math.atan2(-x1,y1) - Math.atan2(-dx,dy);		// rotated angle = original angle - vector angle;
+                    var alpha2 = Math.atan2(-x2,y2) - Math.atan2(-dx,dy);	
+                    
+                    var xi = Math.cos(alpha1) * Math.sqrt(x1*x1+y1*y1);		// rotated x1, x2, y = y1 = y2
+                    var xf = Math.cos(alpha2) * Math.sqrt(x2*x2+y2*y2);
+                    var y = -Math.sin(alpha1) * Math.sqrt(x1*x1+y1*y1);
+                    
+                    if (Math.abs(y) < r) {
+                                                                        
+                        var t1 = (-Math.sqrt(r*r-y*y) - xi) / (xf - xi);									
+                        var t2 = ( Math.sqrt(r*r-y*y) - xi) / (xf - xi);
+
+                        if (0 < t1 && t1 < 1 && 0 < t2 && t2 < 1)		{var t = Math.min(t1,t2)}
+                        else if (0 < t1 && t1 < 1)						{var t = t1}
+                        else if (0 < t2 && t2 < 1)						{var t = t2}
+                        else if (Math.abs(xi) < r && Math.abs(xf) < r) 	{var t = 0}		// buggy, for non-moving object
+                        
+                    }
+                    
+                    if (typeof t === 'number') acgn.collision(A,B,t);
+            
+            }
+        
+        };
+        
+    };
+
 };
-acgn.endContact = function() {
-};
-acgn.preSolve = function() {
-};
-acgn.postSolve = function() {
+acgn.collision = function(A, B, t) {
+        
+    var damageA = B.atk - A.def;
+    var damageB = A.atk - B.def;
+    
+    if (damageA > 0) A.hp -= damageA;
+    if (damageB > 0) B.hp -= damageB;
+    
+    if (A.hp <= 0) {A.spriteState = 'dead'; acgn.point += A.template.point;}
+    if (B.hp <= 0) {B.spriteState = 'dead'; acgn.point += B.template.point;}
+    
 };
 acgn.animate = function() {
 
@@ -3911,18 +4144,19 @@ acgn.animate = function() {
     
     acgn.t0 = acgn.t1 || Date.now();
     acgn.t1 = Date.now();
-    var dt = acgn.t1 - acgn.t0;
+    acgn.dt = acgn.t1 - acgn.t0;
     
     acgn.key.animate();
     
-    // switch (acgn.gameState) {
+    switch (acgn.gameState) {
         // case 'initializing':
         // case 'loading':
             // // break;
         // case 'normal':
             // break;
         // case 'play':
-            
+        case 'stg':
+            acgn.stgUpdate();
         // case 'wait':
             // switch (acgn.waitState) {
                 // case 'message':
@@ -3939,7 +4173,7 @@ acgn.animate = function() {
             // // if (gameNow - gameLast > 0.1) gameNow = gameLast + 0.1; and adjust bgm
             // world.Step(dt, 1, 1);
             // break;
-    // };
+    };
     
     // any waiting
     var until = acgn.wait.until;
@@ -3983,6 +4217,7 @@ acgn.animate = function() {
         for (var j = 0; j < layer.children.length; j++) {
         
             var item = layer.children[j];
+            if (item.isLayer) continue;
             
             // fade in fade out
             switch (item.state) {
@@ -3990,24 +4225,41 @@ acgn.animate = function() {
                     item.alpha += item.birthAlpha / 20;
                     if (typeof item.enter === 'function') item.enter(item);
                     if (item.alpha >= item.birthAlpha) {
+                        
                         item.alpha = item.birthAlpha + 0;
-                        item.x = item.birthX + 0;
-                        item.y = item.birthY + 0;
+                        
+                        if (item.parent !== acgn.stage.sprite) {
+                            item.x = item.birthX + 0;
+                            item.y = item.birthY + 0;
+                        }
+                        
                         item.state = 'normal';
+                        
+                        if ( item.parent === acgn.stage.sprite && ( 
+                            ( item.x + item.appearanceX < 0 ) || ( item.x - item.appearanceX > acgn.width) ||
+                            ( item.y + item.appearanceY < 0 ) || ( item.y - item.appearanceY > acgn.height) )
+                         ) {
+                            item.state = 'enter';
+                        };
+                        
                     };
                     break;
                 };
                 case 'exit': {
                     item.alpha -= item.birthAlpha / 20;
                     if (typeof item.exit === 'function') item.exit(item);
-                    if (item.alpha < 0) item.parent.removeChild(item);
+                    if (item.alpha < 0) {
+                        item.parent.removeChild(item);
+                    };
                 };
             };
             
             // update texture
-            if (item.template && item.template.state && item.template.state[item.state] && item.template.state[item.state].texture) {
-                
-                var textures = item.template.state[item.state].texture;
+            // if (item.template && item.template.state && item.template.state[item.state] && item.template.state[item.state].texture) {
+            if (item.textures) {
+            
+                // var textures = item.template.state[item.state].texture;
+                var textures = item.textures;
                 
                 // total state time
                 var t = acgn.t1 - item.stateBirth;
@@ -4020,7 +4272,7 @@ acgn.animate = function() {
                 
                 // texture name
                 var name = textures[f];
-                if (PIXI.utils.TextureCache[name + '_' + item.direction]) name += '_' + item.direction;
+                // if (PIXI.utils.TextureCache[name + '_' + item.direction]) name += '_' + item.direction;
                 
                 // set texture
                 item.texture = PIXI.Texture.fromFrame(name);
@@ -4029,21 +4281,40 @@ acgn.animate = function() {
             
             // custom update
             var update = item.update;
-            if (typeof update === 'function')               {update()}
-            else if (typeof update === 'string')            {eval(update.replace('this.','item.'))}
+            if (typeof update === 'function')               {update(item)}
+            else if (typeof update === 'string')            {eval(update)}
             else if (update instanceof Array) {
             
                 for (var k = 0; k < update.length; k++) {
                     var update2 = update[k];
-                    if (typeof update2 === 'function')      {update2()}
-                    else if (typeof update2 === 'string')   {eval(update2.replace('this.','item.'))}
+                    if (typeof update2 === 'function')      {update2(item)}
+                    else if (typeof update2 === 'string')   {eval(update2)}
                 };
                 
+            };
+            // sprite template updates
+            if (item.updates) {
+                
+                var updates = item.updates;
+                for (var k = 0; k < updates.length; k++) {
+
+                    var update = updates[k];
+                    var current = Math.floor( ( acgn.t1 - item.spriteStateBirth - update.t /* start time */ ) / update.f /* freq */ );
+                    var next = item.updatesCount[k];
+                    
+                    if ( current >= next && ( current < update.r /* repeat */ || update.r === 0 ) ) {
+                        
+                        update.fn(item);
+                        item.updatesCount[k] += 1;
+                        
+                    };
+                    
+                };
             };
             
             var template = item.template;
             
-            if (acgn.gameState == 'play' && template && template.state) {
+            if (acgn.gameState == 'play' && template && template.state && false) {
                 
                 if (item.stateBirth === undefined) {
                     item.birth = gameNow;
@@ -4104,48 +4375,13 @@ acgn.animate = function() {
     };
     
     // physics
-    acgn.world.Step(dt/1000);
+    // acgn.world.Step(acgn.dt/1000);
     
-    for (var i = 0; i < acgn.physics.length; i++) {
-    
-        var item = acgn.physics[i];
-        
-        // position & rotation
-        var body = item.body;
-        var b2pos = body.GetPosition();
-        
-        var x = b2pos.get_x() * acgn.scale;
-        var y = b2pos.get_y() * acgn.scale;
-        var pos = item.position;
-        
-        item.position = {
-            x: Math.round(x),
-            y: Math.round(y)
-        };
-        item.rotation = body.GetAngle();
-        
-        if (item.state == 'dead' || 
-                (
-                    (item.shape == 'circle' || item.shape == 'rectangle') &&
-                    x < -100 || x > world.width + 100 || y < -100 || y > world.height + 100 
-                )
-            ) {
-            
-            item.state = 'dead';
-            var k = item.reference.indexOf(item);
-            item.reference.splice(k, 1);
-            world.DestroyBody(body);
-            delete item.body;
-            
-        };
-        
-    };
-    
+    acgn.step();
     
     for (var i = 0; i < acgn.updates.length; i++) {
         acgn.updates[i]();
     };
-    
     
     // animate
     // acgn.fadeInOut();
@@ -4176,6 +4412,26 @@ acgn.animate = function() {
     acgn.renderer.render(stage);
 
 };
+acgn.stgUpdate = function() {
+
+    if (acgn.player1) {
+    
+        var p = acgn.player1;
+        
+        if (p.spriteState === 'dead') {
+        
+            if (acgn.life > 0) {
+                acgn.player({template: p.template.name, x: acgn.width * 0.5, y: acgn.height - 50, player: 1});
+                acgn.life--;
+            } else {
+                
+            };
+        
+        };
+
+    };
+
+};
 
 acgn.sandbox = function() {
 
@@ -4199,4 +4455,4 @@ acgn.sandbox = function() {
     
 };
 
-acgn.initialize();;
+acgn.initialize();
